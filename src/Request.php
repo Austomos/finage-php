@@ -4,6 +4,7 @@ namespace Finage;
 
 use Finage\Exception\FinageException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 abstract class Request
 {
@@ -40,28 +41,29 @@ abstract class Request
     }
 
     /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \JsonException
      * @throws \Finage\Exception\FinageException
      */
     protected function get(string $uri, array $query = []): array|object
     {
         $query['apikey'] = $this->getToken();
-        $response = $this->client->get($uri, [
-            'query' => $query
-        ]);
+        try {
+            $response = $this->client->get($uri, [
+                'query' => $query
+            ]);
+        } catch (GuzzleException $e) {
+            $response = $e->getResponse();
+        } finally {
+            $result = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+            if (!is_array($result) && !is_object($result)) {
+                throw new FinageException('Result from json is invalid', 400);
+            }
 
-        $result = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
-        if ($response->getStatusCode() !== 200) {
-            throw new FinageException(
-                $result->error ?? 'Response does not return data',
-                $response->getStatusCode()
-            );
+            if (isset($e)) {
+                throw new FinageException($result->error ?? $e->getMessage(), $e->getCode());
+            }
+            return $result;
         }
-        if (!is_array($result) && !is_object($result)) {
-            throw new FinageException('Result from json is invalid', 400);
-        }
-        return $result;
     }
 
     /**
