@@ -3,6 +3,7 @@
 namespace Finage;
 
 use JetBrains\PhpStorm\Pure;
+use StockMarket\Stock;
 
 final class Finage
 {
@@ -39,6 +40,11 @@ final class Finage
     #[Pure] public function index(): Index
     {
         return new Index($this->getToken(), self::BASE_URI);
+    }
+
+    public function stock(): Stock
+    {
+        return new Stock($this->getToken(), self::BASE_URI);
     }
 
 }

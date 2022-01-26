@@ -2,9 +2,9 @@
 
 namespace Finage;
 
-final class Index extends Request
+final class Stock extends Request
 {
-    private const REQUEST_CATEGORY = 'index';
+    private const REQUEST_CATEGORY = 'stock';
 
     /**
      * @throws \JsonException
@@ -19,4 +19,5 @@ final class Index extends Request
             . $symbol;
         return $this->get($uri);
     }
+
 }
