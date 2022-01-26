@@ -2,9 +2,6 @@
 
 namespace Finage;
 
-use JetBrains\PhpStorm\Pure;
-use StockMarket\Stock;
-
 final class Finage
 {
     private const BASE_URI = 'https://api.finage.co.uk/';
@@ -37,7 +34,7 @@ final class Finage
     /**
      * @return \Finage\Index
      */
-    #[Pure] public function index(): Index
+    public function index(): Index
     {
         return new Index($this->getToken(), self::BASE_URI);
     }
