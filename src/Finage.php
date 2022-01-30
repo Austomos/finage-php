@@ -2,6 +2,11 @@
 
 namespace Finage;
 
+use Finage\Api\{
+    Index,
+    Stock
+};
+
 final class Finage
 {
     private const BASE_URI = 'https://api.finage.co.uk/';

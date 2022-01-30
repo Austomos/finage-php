@@ -1,13 +1,12 @@
 <?php
 
-namespace Finage;
+namespace Finage\Api;
 
-final class Stock extends Request
+final class Index extends Request
 {
-    private const REQUEST_CATEGORY = 'stock';
+    private const REQUEST_CATEGORY = 'index';
 
     /**
-     * @throws \JsonException
      * @throws \Finage\Exception\FinageException
      */
     public function prevClose(string $symbol): array|object
@@ -19,5 +18,4 @@ final class Stock extends Request
             . $symbol;
         return $this->get($uri);
     }
-
 }

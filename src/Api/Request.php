@@ -1,6 +1,6 @@
 <?php
 
-namespace Finage;
+namespace Finage\Api;
 
 use Finage\Exception\FinageException;
 use GuzzleHttp\Client;
@@ -15,6 +15,10 @@ abstract class Request
     private string $baseURI;
     private Client $client;
 
+    /**
+     * @param string $token
+     * @param string $baseURI
+     */
     public function __construct(string $token, string $baseURI)
     {
         $this->setToken($token);
@@ -41,7 +45,6 @@ abstract class Request
     }
 
     /**
-     * @throws \JsonException
      * @throws \Finage\Exception\FinageException
      */
     protected function get(string $uri, array $query = []): array|object
@@ -54,11 +57,14 @@ abstract class Request
         } catch (GuzzleException $e) {
             $response = $e->getResponse();
         } finally {
-            $result = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+            try {
+                $result = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+            } catch (\JsonException $e) {
+                throw new FinageException($e->getMessage(), $e->getCode(), $e);
+            }
             if (!is_array($result) && !is_object($result)) {
                 throw new FinageException('Result from json is invalid', 400);
             }
-
             if (isset($e)) {
                 throw new FinageException($result->error ?? $e->getMessage(), $e->getCode());
             }
