@@ -13,11 +13,11 @@ final class Finage
     private string $token;
 
     /**
-     * @param string $token
+     * @param string $token API Key is mandatory
      */
     public function __construct(string $token)
     {
-            $this->setToken($token);
+        $this->setToken($token);
     }
 
     /**
@@ -37,13 +37,16 @@ final class Finage
     }
 
     /**
-     * @return \Finage\Index
+     * @return \Finage\Api\Index
      */
     public function index(): Index
     {
         return new Index($this->getToken(), self::BASE_URI);
     }
 
+    /**
+     * @return \Finage\Api\Stock
+     */
     public function stock(): Stock
     {
         return new Stock($this->getToken(), self::BASE_URI);

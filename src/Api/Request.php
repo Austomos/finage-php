@@ -55,6 +55,9 @@ abstract class Request
                 'query' => $query
             ]);
         } catch (GuzzleException $e) {
+            if (!method_exists($e, 'getResponse')) {
+                throw new FinageException($e->getMessage(), $e->getCode(), $e);
+            }
             $response = $e->getResponse();
         } finally {
             try {
