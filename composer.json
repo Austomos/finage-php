@@ -4,9 +4,15 @@
     "autoload": {
         "psr-4": {
             "Finage\\": "src/"
-        }
+        },
+        "files": [
+            "src/util.php"
+        ]
     },
     "require": {
         "guzzlehttp/guzzle": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
     }
 }
