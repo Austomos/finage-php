@@ -3,6 +3,7 @@
 namespace Finage\Api;
 
 use Finage\Exception\FinageException;
+use Finage\Finage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -12,36 +13,14 @@ abstract class Request
     protected const REQUEST_TYPE_LAST = 'last';
     protected const REQUEST_TYPE_HISTORY = 'history';
     private string $token;
-    private string $baseURI;
     private Client $client;
 
-    /**
-     * @param string $token
-     * @param string $baseURI
-     */
-    public function __construct(string $token, string $baseURI)
+    public function __construct()
     {
-        $this->setToken($token);
-        $this->setBaseURI($baseURI);
+        $this->setToken(Finage::getStaticToken());
         $this->client = new Client([
-            'base_uri' => $this->getBaseURI(),
+            'base_uri' => Finage::BASE_URI,
         ]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getBaseURI(): string
-    {
-        return $this->baseURI;
-    }
-
-    /**
-     * @param string $baseURI
-     */
-    public function setBaseURI(string $baseURI): void
-    {
-        $this->baseURI = $baseURI;
     }
 
     /**

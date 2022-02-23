@@ -3,17 +3,20 @@
 namespace Finage;
 
 use Finage\Api\{
+    Crypto,
     Index,
     Stock
 };
+use Finage\Exception\FinageException;
 
 final class Finage
 {
-    private const BASE_URI = 'https://api.finage.co.uk/';
-    private string $token;
+    public const BASE_URI = 'https://api.finage.co.uk/';
+    private static string $token;
 
     /**
      * @param string $token API Key is mandatory
+     * @throws \Finage\Exception\FinageException
      */
     public function __construct(string $token)
     {
@@ -23,17 +26,21 @@ final class Finage
     /**
      * @return string
      */
-    public function getToken(): string
+    public static function getStaticToken(): string
     {
-        return $this->token;
+        return self::$token;
     }
 
     /**
      * @param string $token
+     * @throws \Finage\Exception\FinageException
      */
     public function setToken(string $token): void
     {
-        $this->token = $token;
+        if (empty($token)) {
+            throw new FinageException('Token is missing !', 400);
+        }
+        self::$token = $token;
     }
 
     /**
@@ -41,7 +48,7 @@ final class Finage
      */
     public function index(): Index
     {
-        return new Index($this->getToken(), self::BASE_URI);
+        return new Index();
     }
 
     /**
@@ -49,7 +56,12 @@ final class Finage
      */
     public function stock(): Stock
     {
-        return new Stock($this->getToken(), self::BASE_URI);
+        return new Stock();
+    }
+
+    public function crypto(): Crypto
+    {
+        return new Crypto();
     }
 
 }
