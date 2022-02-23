@@ -6,6 +6,7 @@ use Finage\Exception\FinageException;
 use Finage\Finage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use JsonException;
 
 abstract class Request
 {
@@ -41,7 +42,7 @@ abstract class Request
         } finally {
             try {
                 $result = json_decode($response->getBody(), false, 512, JSON_THROW_ON_ERROR);
-            } catch (\JsonException $e) {
+            } catch (JsonException $e) {
                 throw new FinageException($e->getMessage(), $e->getCode(), $e);
             }
             if (!is_array($result) && !is_object($result)) {
