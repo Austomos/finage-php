@@ -2,8 +2,11 @@
 
 namespace Finage\Api;
 
+use Finage\Utils\Utils;
+
 class Crypto extends Request
 {
+    use Utils;
     private const REQUEST_CATEGORY = 'crypto';
 
     /**
@@ -27,8 +30,8 @@ class Crypto extends Request
         $symbolsString = implode(',', $symbols);
         return $this->get($uri, [
             'symbols' => $symbolsString,
-            'quotes' => boolToString($quotes),
-            'trades' => boolToString($trades),
+            'quotes' => $this->boolToString($quotes),
+            'trades' => $this->boolToString($trades),
         ]);
     }
 }
