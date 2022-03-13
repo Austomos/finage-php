@@ -59,6 +59,9 @@ final class Finage
         return new Stock();
     }
 
+    /**
+     * @return \Finage\Api\Crypto
+     */
     public function crypto(): Crypto
     {
         return new Crypto();

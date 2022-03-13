@@ -16,4 +16,19 @@ class Crypto extends Request
             . '/' . addslashes($symbol);
         return $this->get($uri);
     }
+
+    /**
+     * @throws \Finage\Exception\FinageException
+     */
+    public function snapshot(array $symbols, bool $quotes = true, bool $trades = false): array|object
+    {
+        $uri = '/' . self::REQUEST_TYPE_SNAPSHOT
+            . '/' . self::REQUEST_CATEGORY;
+        $symbolsString = implode(',', $symbols);
+        return $this->get($uri, [
+            'symbols' => $symbolsString,
+            'quotes' => boolToString($quotes),
+            'trades' => boolToString($trades),
+        ]);
+    }
 }
