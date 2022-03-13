@@ -13,6 +13,7 @@ abstract class Request
     protected const REQUEST_TYPE_AGG = 'agg';
     protected const REQUEST_TYPE_LAST = 'last';
     protected const REQUEST_TYPE_HISTORY = 'history';
+    protected const REQUEST_TYPE_SNAPSHOT = 'snapshot';
     private string $token;
     private Client $client;
 
